@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 2-1-2010 22:42
@@ -44,19 +44,16 @@ $step = $nv_Request->get_int('step', 'post,get', 1);
 $maxstep = $nv_Request->get_int('maxstep', 'session', 1);
 
 if ($step <= 0 or $step > 7) {
-    Header('Location: ' . NV_BASE_SITEURL . 'install/index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&step=1');
-    exit();
+    nv_redirect_location(NV_BASE_SITEURL . 'install/index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&step=1');
 }
 
 if ($step > $maxstep and $step > 2) {
     $step = $maxstep;
-    Header('Location: ' . NV_BASE_SITEURL . 'install/index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&step=' . $step);
-    exit();
+    nv_redirect_location(NV_BASE_SITEURL . 'install/index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&step=' . $step);
 }
 
 if (file_exists(NV_ROOTDIR . '/' . NV_CONFIG_FILENAME) and $step < 7) {
-    Header('Location: ' . NV_BASE_SITEURL . 'index.php');
-    exit();
+    nv_redirect_location(NV_BASE_SITEURL . 'index.php');
 }
 if (empty($sys_info['supports_rewrite'])) {
     if (isset($_COOKIE['supports_rewrite']) and $_COOKIE['supports_rewrite'] == NV_CHECK_SESSION) {
@@ -157,7 +154,7 @@ if ($step == 1) {
 
             // Login with username and password
             $login_result = ftp_login($conn_id, $global_config['ftp_user_name'], $global_config['ftp_user_pass']);
-            if ((! $conn_id) || (! $login_result)) {
+            if ((! $conn_id) or (! $login_result)) {
                 $ftp_check_login = 3;
                 $array_ftp_data['error'] = $lang_module['ftp_error_account'];
             } elseif (ftp_chdir($conn_id, $global_config['ftp_path'])) {
@@ -278,10 +275,9 @@ if ($step == 1) {
     }
 
     $array_resquest['php_required'] = $sys_info['php_required'];
-    $array_resquest['php_version'] = PHP_VERSION;
-    $sys_info['php_support'] = (version_compare(PHP_VERSION, $sys_info['php_required']) < 0) ? 0 : 1;
-    $array_resquest_key = array( 'php_support', 'opendir_support', 'gd_support', 'mcrypt_support', 'session_support', 'fileuploads_support' );
-    foreach ($array_resquest_key as $key) {
+    $array_resquest['php_version'] = $sys_info['php_version'];
+
+    foreach ($nv_resquest_serverext_key as $key) {
         $array_resquest['class_' . $key] = ($sys_info[$key]) ? 'highlight_green' : 'highlight_red';
         $array_resquest[$key] = ($sys_info[$key]) ? $lang_module['compatible'] : $lang_module['not_compatible'];
 
@@ -296,9 +292,9 @@ if ($step == 1) {
 
     $array_suport = array();
     $array_support['supports_rewrite'] = (empty($sys_info['supports_rewrite'])) ? 0 : 1;
-    $array_support['output_buffering'] = (ini_get('output_buffering') == '1' || strtolower(ini_get('output_buffering')) == 'on') ? 0 : 1;
-    $array_support['session_auto_start'] = (ini_get('session.auto_start') == '1' || strtolower(ini_get('session.auto_start')) == 'on') ? 0 : 1;
-    $array_support['display_errors'] = (ini_get('display_errors') == '1' || strtolower(ini_get('display_errors')) == 'on') ? 0 : 1;
+    $array_support['output_buffering'] = (ini_get('output_buffering') == '1' or strtolower(ini_get('output_buffering')) == 'on') ? 0 : 1;
+    $array_support['session_auto_start'] = (ini_get('session.auto_start') == '1' or strtolower(ini_get('session.auto_start')) == 'on') ? 0 : 1;
+    $array_support['display_errors'] = (ini_get('display_errors') == '1' or strtolower(ini_get('display_errors')) == 'on') ? 0 : 1;
     $array_support['allowed_set_time_limit'] = ($sys_info['allowed_set_time_limit']) ? 1 : 0;
     $array_support['zlib_support'] = ($sys_info['zlib_support']) ? 1 : 0;
     $array_support['zip_support'] = (extension_loaded('zip')) ? 1 : 0;
@@ -377,8 +373,7 @@ if ($step == 1) {
             }
         }
 
-        echo json_encode($respon);
-        die();
+        nv_jsonOutput($respon);
     }
 
     if (in_array($db_config['dbtype'], $PDODrivers) and ! empty($db_config['dbhost']) and preg_match('#[a-z]#ui', $db_config['dbname']) and ! empty($db_config['dbuname']) and ! empty($db_config['prefix'])) {
@@ -658,8 +653,7 @@ if ($step == 1) {
                         ++ $step;
                         $nv_Request->set_Session('maxstep', $step);
 
-                        Header('Location: ' . NV_BASE_SITEURL . 'install/index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&step=' . $step);
-                        exit();
+                        nv_redirect_location(NV_BASE_SITEURL . 'install/index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&step=' . $step);
                     }
                 }
             }
@@ -674,7 +668,7 @@ if ($step == 1) {
 
     define('NV_USERS_GLOBALTABLE', $db_config['prefix'] . '_users');
     $array_data['site_name'] = $nv_Request->get_title('site_name', 'post', $array_data['site_name'], 1);
-    $array_data['nv_login'] = nv_substr($nv_Request->get_title('nv_login', 'post', $array_data['nv_login'], 1), 0, NV_UNICKMAX);
+    $array_data['nv_login'] = nv_substr($nv_Request->get_title('nv_login', 'post', $array_data['nv_login'], 1), 0, $global_config['nv_unickmax']);
     $array_data['nv_email'] = $nv_Request->get_title('nv_email', 'post', $array_data['nv_email']);
     $array_data['nv_password'] = $nv_Request->get_title('nv_password', 'post', $array_data['nv_password']);
     $array_data['re_password'] = $nv_Request->get_title('re_password', 'post', $array_data['re_password']);
@@ -684,7 +678,17 @@ if ($step == 1) {
         $array_data['question'] = $nv_Request->get_title('question', 'post', $array_data['question'], 1);
         $array_data['answer_question'] = $nv_Request->get_title('answer_question', 'post', $array_data['answer_question'], 1);
 
-        $global_config['site_email'] = $array_data['nv_email'];
+        if (isset($_SERVER['SERVER_ADMIN']) and !empty($_SERVER['SERVER_ADMIN']) and filter_var($_SERVER['SERVER_ADMIN'], FILTER_VALIDATE_EMAIL)) {
+            $global_config['site_email'] = $_SERVER['SERVER_ADMIN'];
+        } elseif (($php_email = @ini_get("sendmail_from")) != "" and filter_var($php_email, FILTER_VALIDATE_EMAIL)) {
+            $global_config['site_email'] = $php_email;
+        } elseif (preg_match("/([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+/", ini_get("sendmail_path"), $matches) and filter_var($matches[0], FILTER_VALIDATE_EMAIL)) {
+            $global_config['site_email'] = $matches[0];
+        } elseif (checkdnsrr($_SERVER['SERVER_NAME'], "MX") || checkdnsrr($_SERVER['SERVER_NAME'], "A")) {
+            $global_config['site_email'] = "webmaster@" . $_SERVER['SERVER_NAME'];
+        } else {
+            $global_config['site_email'] = $array_data['nv_email'];
+        }
 
         if ($nv_Request->isset_request('nv_login,nv_password', 'post')) {
             // Bat dau phien lam viec cua MySQL
@@ -693,8 +697,8 @@ if ($step == 1) {
                 $error = 'Sorry! Could not connect to data server';
             }
             else {
-                $check_login = nv_check_valid_login($array_data['nv_login'], NV_UNICKMAX, NV_UNICKMIN);
-                $check_pass = nv_check_valid_pass($array_data['nv_password'], NV_UPASSMAX, NV_UPASSMIN);
+                $check_login = nv_check_valid_login($array_data['nv_login'], $global_config['nv_unickmax'], $global_config['nv_unickmin']);
+                $check_pass = nv_check_valid_pass($array_data['nv_password'], $global_config['nv_upassmax'], $global_config['nv_upassmin']);
                 $check_email = nv_check_valid_email($array_data['nv_email']);
 
                 if (empty($array_data['site_name'])) {
@@ -723,7 +727,7 @@ if ($step == 1) {
 
                     $sth = $db->prepare("INSERT INTO " . $db_config['prefix'] . "_users
         				(userid, group_id, username, md5username, password, email, first_name, last_name, gender, photo, birthday, sig,	regdate, question, answer, passlostkey, view_mail, remember, in_groups, active, checknum, last_login, last_ip, last_agent, last_openid, idsite)
-        				VALUES(" . $userid . ", 1, :username, :md5username, :password, :email, :first_name, '', '', '', 0, '', " . NV_CURRENTTIME . ", :question, :answer_question, '', 0, 1, '', 1, '', " . NV_CURRENTTIME . ", '', '', '', 0)");
+        				VALUES(" . $userid . ", 1, :username, :md5username, :password, :email, :first_name, '', '', '', 0, '', " . NV_CURRENTTIME . ", :question, :answer_question, '', 0, 1, '1', 1, '', " . NV_CURRENTTIME . ", '', '', '', 0)");
                     $sth->bindParam(':username', $array_data['nv_login'], PDO::PARAM_STR);
                     $sth->bindValue(':md5username', nv_md5safe($array_data['nv_login']), PDO::PARAM_STR);
                     $sth->bindParam(':password', $password, PDO::PARAM_STR);
@@ -793,6 +797,7 @@ if ($step == 1) {
                         nv_save_file_config();
 
                         $array_config_rewrite = array(
+                            'rewrite_enable' => $global_config['rewrite_enable'],
                             'rewrite_optional' => $global_config['rewrite_optional'],
                             'rewrite_endurl' => $global_config['rewrite_endurl'],
                             'rewrite_exturl' => $global_config['rewrite_exturl'],
@@ -815,10 +820,10 @@ if ($step == 1) {
 
                                 $check_rewrite_file = nv_check_rewrite_file();
 
-                                if ($check_rewrite_file) {
+                                if ($global_config['rewrite_enable'] and $check_rewrite_file) {
                                     $content_sitemap = 'Sitemap: ' . NV_MY_DOMAIN . NV_BASE_SITEURL . 'sitemap.xml';
                                 } else {
-                                    $content_sitemap = 'Sitemap: ' . NV_MY_DOMAIN . NV_BASE_SITEURL . 'index.php/SitemapIndex' . $global_config['rewrite_endurl'];
+                                    $content_sitemap = 'Sitemap: ' . NV_MY_DOMAIN . NV_BASE_SITEURL . 'index.php?' . NV_NAME_VARIABLE . '=SitemapIndex' . $global_config['rewrite_endurl'];
                                 }
 
                                 $contents = str_replace('Sitemap: http://yousite.com/?nv=SitemapIndex', $content_sitemap, $contents);
@@ -901,8 +906,7 @@ if ($step == 1) {
                             }
                             $db->query("INSERT INTO " . $db_config['prefix'] . "_counter VALUES ('country', 'unkown', 0, 0, 0)");
 
-                            Header('Location: ' . NV_BASE_SITEURL . 'install/index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&step=' . $step);
-                            exit();
+                            nv_redirect_location(NV_BASE_SITEURL . 'install/index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&step=' . $step);
                         } else {
                             $error = sprintf($lang_module['file_not_writable'], NV_DATADIR . '/config_global.php');
                         }
@@ -941,7 +945,7 @@ if ($step == 1) {
             // Login with username and password
             $login_result = ftp_login($conn_id, $ftp_server_array['ftp_user_name'], $ftp_server_array['ftp_user_pass']);
 
-            if ((! $conn_id) || (! $login_result)) {
+            if ((! $conn_id) or (! $login_result)) {
                 $ftp_check_login = 3;
             } elseif (ftp_chdir($conn_id, $ftp_server_array['ftp_path'])) {
                 $ftp_check_login = 1;
@@ -1020,6 +1024,7 @@ function nv_save_file_config()
         $content .= "\$global_config['sitekey'] = '" . $global_config['sitekey'] . "';// Do not change sitekey!\n";
         $content .= "\$global_config['hashprefix'] = '" . $global_config['hashprefix'] . "';\n";
         $content .= "\$global_config['cached'] = 'files';\n";
+        $content .= "\$global_config['session_handler'] = 'files';\n";
         $content .= "\$global_config['extension_setup'] = 3; // 0: No, 1: Upload, 2: NukeViet Store, 3: Upload + NukeViet Store\n";
 
         if ($step < 7) {

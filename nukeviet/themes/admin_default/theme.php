@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 31/05/2010, 00:36
@@ -12,9 +12,30 @@ if (! defined('NV_MAINFILE')) {
     die('Stop!!!');
 }
 
+function nv_mailHTML($title, $content, $footer='')
+{
+    global $global_config, $lang_global;
+
+    $xtpl = new XTemplate('mail.tpl', NV_ROOTDIR . '/themes/default/system');
+    $xtpl->assign('SITE_URL', NV_MY_DOMAIN);
+    $xtpl->assign('GCONFIG', $global_config);
+    $xtpl->assign('LANG', $lang_global);
+    $xtpl->assign('MESSAGE_TITLE', $title);
+    $xtpl->assign('MESSAGE_CONTENT', $content);
+    $xtpl->assign('MESSAGE_FOOTER', $footer);
+    $xtpl->parse('main');
+    return $xtpl->text('main');
+}
+
+/**
+ * nv_get_submenu()
+ *
+ * @param mixed $mod
+ * @return
+ */
 function nv_get_submenu($mod)
 {
-    global $lang_global, $module_name, $global_config, $admin_mods;
+    global $module_name, $global_config, $admin_mods, $lang_global;
 
     $submenu = array();
 
@@ -35,9 +56,15 @@ function nv_get_submenu($mod)
     return $submenu;
 }
 
+/**
+ * nv_get_submenu_mod()
+ *
+ * @param mixed $module_name
+ * @return
+ */
 function nv_get_submenu_mod($module_name)
 {
-    global $nv_Cache, $lang_global, $global_config, $db, $site_mods, $admin_info, $db_config, $admin_mods;
+    global  $lang_global, $global_config, $db, $site_mods, $admin_info, $db_config, $admin_mods;
 
     $submenu = array();
     if (isset($site_mods[$module_name])) {
@@ -61,9 +88,16 @@ function nv_get_submenu_mod($module_name)
     return $submenu;
 }
 
+/**
+ * nv_admin_theme()
+ *
+ * @param mixed $contents
+ * @param integer $head_site
+ * @return
+ */
 function nv_admin_theme($contents, $head_site = 1)
 {
-    global $global_config, $lang_global, $admin_mods, $site_mods, $admin_menu_mods, $module_name, $module_file, $module_info, $admin_info, $db, $page_title, $submenu, $select_options, $op, $set_active_op, $array_lang_admin, $my_head, $my_footer, $array_mod_title, $array_url_instruction, $op, $client_info;
+    global $global_config, $lang_global, $admin_mods, $site_mods, $admin_menu_mods, $module_name, $module_file, $module_info, $admin_info, $page_title, $submenu, $select_options, $op, $set_active_op, $array_lang_admin, $my_head, $my_footer, $array_mod_title, $array_url_instruction, $op, $client_info;
 
     $dir_template = '';
 
@@ -131,12 +165,17 @@ function nv_admin_theme($contents, $head_site = 1)
         $xtpl->assign('NV_JS_MODULE', NV_BASE_SITEURL . 'themes/' . $global_config['admin_theme'] . '/js/' . $module_file . '.js');
         $xtpl->parse('main.module_js');
     }
+    elseif (file_exists(NV_ROOTDIR . '/themes/admin_default/js/' . $module_file . '.js')) {
+        $xtpl->assign('NV_JS_MODULE', NV_BASE_SITEURL . 'themes/admin_default/js/' . $module_file . '.js');
+        $xtpl->parse('main.module_js');
+    }
 
     if ($head_site == 1) {
         $xtpl->assign('NV_GO_CLIENTSECTOR', $lang_global['go_clientsector']);
         $lang_site = (! empty($site_mods)) ? NV_LANG_DATA : $global_config['site_lang'];
         $xtpl->assign('NV_GO_CLIENTSECTOR_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang_site);
         $xtpl->assign('NV_LOGOUT', $lang_global['admin_logout_title']);
+        $xtpl->assign('NV_GO_ALL_NOTIFICATION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=siteinfo&amp;' . NV_OP_VARIABLE . '=notification');
 
         if (! empty($array_lang_admin)) {
             $xtpl->assign('NV_LANGDATA', $lang_global['langdata']);
@@ -278,11 +317,12 @@ function nv_admin_theme($contents, $head_site = 1)
         }
 
         $xtpl->parse('main.select_option');
-    } elseif (isset($site_mods[$module_name]['main_file']) and $site_mods[$module_name]['main_file']) {
+    }
+    if (isset($site_mods[$module_name]['main_file']) and $site_mods[$module_name]['main_file']) {
         $xtpl->assign('NV_GO_CLIENTMOD', $lang_global['go_clientmod']);
         $xtpl->parse('main.site_mods');
     }
-    
+
     if (isset($array_url_instruction[$op])) {
         $xtpl->assign('NV_INSTRUCTION', $lang_global['go_instrucion']);
         $xtpl->assign('NV_URL_INSTRUCTION', $array_url_instruction[$op]);

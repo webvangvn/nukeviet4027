@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 12/31/2009 5:53
@@ -19,6 +19,12 @@ $menu_top = array(
 );
 
 define('NV_IS_FILE_MODULES', true);
+
+//Document
+$array_url_instruction['main'] = 'https://wiki.nukeviet.vn/nukeviet4:admin:modules:modules';
+$array_url_instruction['setup'] = 'https://wiki.nukeviet.vn/nukeviet4:admin:modules:setup';
+$array_url_instruction['vmodule'] = 'https://wiki.nukeviet.vn/nukeviet4:admin:modules:vmodule';
+$array_url_instruction['edit'] = 'https://wiki.nukeviet.vn/nukeviet4:admin:modules:edit';
 
 /**
  * nv_parse_vers()
@@ -184,6 +190,11 @@ function nv_setup_data_module($lang, $module_name, $sample = 0)
                     try {
                         $db->query($sql);
                     } catch (PDOException $e) {
+                        /*
+                        echo '<pre>';
+                        print_r($e);
+                        echo '</pre>';
+                        */
                         trigger_error($e->getMessage());
                         return $return;
                     }
@@ -284,7 +295,7 @@ function nv_setup_data_module($lang, $module_name, $sample = 0)
                                 $layout = $array_layout_func_default[$module_name][$func];
                             }
                         }
-                        $db->query('INSERT INTO ' . $db_config['prefix'] . '_' . $lang . '_modthemes (`func_id`, `layout`, `theme`) VALUES (' . $arr_func_id[$func] . ', ' . $db->quote($layout) . ', ' . $db->quote($selectthemes) . ')');
+                        $db->query('INSERT INTO ' . $db_config['prefix'] . '_' . $lang . '_modthemes (func_id, layout, theme) VALUES (' . $arr_func_id[$func] . ', ' . $db->quote($layout) . ', ' . $db->quote($selectthemes) . ')');
                     }
                 }
             }
@@ -538,6 +549,23 @@ function change_custom_name_theme($contents)
     global $global_config, $module_file;
 
     $xtpl = new XTemplate('change_custom_name_theme.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
+    $xtpl->assign('CONTENT', $contents);
+
+    $xtpl->parse('main');
+    return $xtpl->text('main');
+}
+
+/**
+ * change_site_title_theme()
+ *
+ * @param mixed $contents
+ * @return
+ */
+function change_site_title_theme($contents)
+{
+    global $global_config, $module_file;
+
+    $xtpl = new XTemplate('change_site_title_theme.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
     $xtpl->assign('CONTENT', $contents);
 
     $xtpl->parse('main');

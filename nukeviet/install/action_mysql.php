@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 12/28/2009 20:8
@@ -49,7 +49,7 @@ $sql_create_table[] = "CREATE TABLE " . NV_AUTHORS_GLOBALTABLE . "_config (
 
 $sql_create_table[] = "CREATE TABLE " . NV_AUTHORS_GLOBALTABLE . "_module (
 	mid mediumint(8) NOT NULL AUTO_INCREMENT,
-	module varchar(55) NOT NULL,
+	module varchar(50) NOT NULL,
 	lang_key varchar(50) NOT NULL DEFAULT '',
 	weight mediumint(8) NOT NULL DEFAULT '0',
 	act_1 tinyint(4) NOT NULL DEFAULT '0',
@@ -62,7 +62,7 @@ $sql_create_table[] = "CREATE TABLE " . NV_AUTHORS_GLOBALTABLE . "_module (
 
 $sql_create_table[] = "CREATE TABLE " . NV_CONFIG_GLOBALTABLE . " (
 	lang varchar(3) NOT NULL DEFAULT 'sys',
-	module varchar(25) NOT NULL DEFAULT 'global',
+	module varchar(50) NOT NULL DEFAULT 'global',
 	config_name varchar(30) NOT NULL DEFAULT '',
 	config_value text,
 	UNIQUE KEY lang (lang,module,config_name)
@@ -121,18 +121,10 @@ $sql_create_table[] = "CREATE TABLE " . NV_COOKIES_GLOBALTABLE . " (
 	KEY name (name)
 ) ENGINE=MyISAM";
 
-$sql_create_table[] = "CREATE TABLE " . $db_config['prefix'] . "_setup (
-	lang char(2) NOT NULL,
-	module varchar(50) NOT NULL,
-	tables varchar(255) NOT NULL,
-	version varchar(100) NOT NULL,
-	setup_time int(11) unsigned NOT NULL DEFAULT '0',
-	UNIQUE KEY lang (lang,module)
-) ENGINE=MyISAM";
-
 $sql_create_table[] = "CREATE TABLE " . $db_config['prefix'] . "_setup_language (
 	lang char(2) NOT NULL,
 	setup tinyint(1) NOT NULL DEFAULT '0',
+    weight smallint(4) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (lang)
 ) ENGINE=MyISAM";
 
@@ -183,40 +175,19 @@ $sql_create_table[] = "CREATE TABLE " . $db_config['prefix'] . "_banners_click (
 	KEY click_os_key (click_os_key)
 ) ENGINE=MyISAM";
 
-$sql_create_table[] = "CREATE TABLE " . $db_config['prefix'] . "_banners_clients (
-	id mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-	login varchar(60) NOT NULL,
-	pass varchar(80) NOT NULL,
-	reg_time int(11) unsigned NOT NULL DEFAULT '0',
-	full_name varchar(250) NOT NULL,
-	email varchar(100) NOT NULL,
-	website varchar(255) NOT NULL,
-	location varchar(255) NOT NULL,
-	yim varchar(100) NOT NULL,
-	phone varchar(100) NOT NULL,
-	fax varchar(100) NOT NULL,
-	mobile varchar(100) NOT NULL,
-	act tinyint(1) unsigned NOT NULL DEFAULT '0',
-	check_num varchar(40) NOT NULL,
-	last_login int(11) unsigned NOT NULL DEFAULT '0',
-	last_ip varchar(15) NOT NULL,
-	last_agent varchar(255) NOT NULL,
-	uploadtype varchar(255) NOT NULL,
-	PRIMARY KEY (id),
-	UNIQUE KEY login (login),
-	UNIQUE KEY email (email),
-	KEY full_name (full_name)
-) ENGINE=MyISAM";
-
 $sql_create_table[] = "CREATE TABLE " . $db_config['prefix'] . "_banners_plans (
 	id smallint(5) unsigned NOT NULL AUTO_INCREMENT,
 	blang char(2) DEFAULT '',
 	title varchar(250) NOT NULL,
-	description varchar(255) DEFAULT '',
+	description text,
 	form varchar(100) NOT NULL,
 	width smallint(4) unsigned NOT NULL DEFAULT '0',
 	height smallint(4) unsigned NOT NULL DEFAULT '0',
 	act tinyint(1) unsigned NOT NULL DEFAULT '0',
+	require_image tinyint(1) unsigned NOT NULL DEFAULT '1',
+	uploadtype varchar(255) NOT NULL DEFAULT '',
+	uploadgroup varchar(255) NOT NULL DEFAULT '',
+	exp_time int(11) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (id),
 	KEY title (title)
 ) ENGINE=MyISAM";
@@ -235,6 +206,7 @@ $sql_create_table[] = "CREATE TABLE " . $db_config['prefix'] . "_banners_rows (
 	imageforswf varchar(255) DEFAULT '',
 	click_url varchar(255) DEFAULT '',
 	target varchar(10) NOT NULL DEFAULT '_blank',
+    bannerhtml mediumtext NOT NULL,
 	add_time int(11) unsigned NOT NULL DEFAULT '0',
 	publ_time int(11) unsigned NOT NULL DEFAULT '0',
 	exp_time int(11) unsigned NOT NULL DEFAULT '0',
@@ -261,7 +233,7 @@ $sql_create_table[] = "CREATE TABLE " . $db_config['prefix'] . "_banip (
 $sql_create_table[] = "CREATE TABLE " . $db_config['prefix'] . "_logs (
 	id int(11) NOT NULL AUTO_INCREMENT,
 	lang varchar(10) NOT NULL,
-	module_name varchar(150) NOT NULL,
+	module_name varchar(50) NOT NULL,
 	name_key varchar(255) NOT NULL,
 	note_action text NOT NULL,
 	link_acess varchar(255) DEFAULT '',

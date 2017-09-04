@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 31/05/2010, 00:36
@@ -12,6 +12,33 @@ if (! defined('NV_SYSTEM') or ! defined('NV_MAINFILE')) {
     die('Stop!!!');
 }
 
+/**
+ *  nv_mailHTML()
+ *
+ * @param string $title
+ * @param string $content
+ * @param string $footer
+ */
+function nv_mailHTML($title, $content, $footer='')
+{
+    global $global_config, $lang_global;
+    $xtpl = new XTemplate('mail.tpl', NV_ROOTDIR . '/themes/default/system');
+    $xtpl->assign('SITE_URL', NV_MY_DOMAIN);
+    $xtpl->assign('GCONFIG', $global_config);
+    $xtpl->assign('LANG', $lang_global);
+    $xtpl->assign('MESSAGE_TITLE', $title);
+    $xtpl->assign('MESSAGE_CONTENT', $content);
+    $xtpl->assign('MESSAGE_FOOTER', $footer);
+    $xtpl->parse('main');
+    return $xtpl->text('main');
+}
+
+/**
+ *  nv_site_theme()
+ *
+ * @param string $contents
+ * @param bool $full
+ */
 function nv_site_theme($contents, $full = true)
 {
     global $home, $array_mod_title, $lang_global, $language_array, $global_config, $site_mods, $module_name, $module_info, $op_file, $mod_title, $my_head, $my_footer, $client_info, $module_config, $op, $drag_block;
@@ -70,7 +97,7 @@ function nv_site_theme($contents, $full = true)
     if (isset($module_config['themes'][$global_config['module_theme']]) and ! empty($module_config['themes'][$global_config['module_theme']])) {
         $config_theme = unserialize($module_config['themes'][$global_config['module_theme']]);
 
-        if (isset($config_theme['css_content']) && ! empty($config_theme['css_content'])) {
+        if (isset($config_theme['css_content']) and ! empty($config_theme['css_content'])) {
             $customFileName = $global_config['module_theme'] . '.' . NV_LANG_DATA . '.' . $global_config['idsite'];
 
             if (! file_exists(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/css/' . $customFileName . '.css')) {
@@ -93,7 +120,7 @@ function nv_site_theme($contents, $full = true)
             $html_links[] = array( 'rel' => 'StyleSheet', 'href' => NV_BASE_SITEURL . NV_ASSETS_DIR . '/css/' . $customFileName . '.css?t=' . $global_config['timestamp'] );
         }
 
-        if (isset($config_theme['gfont']) && ! empty($config_theme['gfont']) && isset($config_theme['gfont']['family']) && !empty($config_theme['gfont']['family'])) {
+        if (isset($config_theme['gfont']) and ! empty($config_theme['gfont']) and isset($config_theme['gfont']['family']) and !empty($config_theme['gfont']['family'])) {
             $subset = isset($config_theme['gfont']['subset']) ? $config_theme['gfont']['subset'] : '';
             $gf = new NukeViet\Client\Gfonts(array('fonts' => array($config_theme['gfont']), 'subset' => $subset), $client_info);
             $webFontFile = $gf->getUrlCss();
@@ -106,6 +133,9 @@ function nv_site_theme($contents, $full = true)
     foreach ($html_links as $links) {
         foreach ($links as $key => $value) {
             $xtpl->assign('LINKS', array( 'key' => $key, 'value' => $value ));
+            if (!empty($value)) {
+                $xtpl->parse('main.links.attr.val');
+            }
             $xtpl->parse('main.links.attr');
         }
         $xtpl->parse('main.links');
@@ -140,7 +170,7 @@ function nv_site_theme($contents, $full = true)
     $logo = file_exists(NV_ROOTDIR . '/' . $logo_small) ? $logo_small : $global_config['site_logo'];
     $size = @getimagesize(NV_ROOTDIR . '/' . $logo);
     $logo_svg = preg_replace('/\.[a-z]+$/i', '.svg', $logo);
-    file_exists(NV_ROOTDIR . '/' . $logo_svg) && $logo = $logo_svg;
+    file_exists(NV_ROOTDIR . '/' . $logo_svg) and $logo = $logo_svg;
 
     $xtpl->assign('LOGO_SRC', NV_BASE_SITEURL . $logo);
     $xtpl->assign('LOGO_WIDTH', $size[0]);
@@ -227,9 +257,21 @@ function nv_site_theme($contents, $full = true)
         $sitecontent = preg_replace('/(<\/body>)/i', $my_footer . '\\1', $sitecontent, 1);
     }
 
-    if (defined('NV_IS_ADMIN') && $full) {
+    if (defined('NV_IS_ADMIN') and $full) {
         $sitecontent = preg_replace('/(<\/body>)/i', PHP_EOL . nv_admin_menu() . PHP_EOL . '\\1', $sitecontent, 1);
     }
 
     return $sitecontent;
+}
+
+/**
+ *  nv_error_theme()
+ *
+ * @param string $title
+ * @param string $content
+ * @param integer $code
+ */
+function nv_error_theme($title, $content, $code)
+{
+    nv_info_die($title, $title, $content, $code);
 }

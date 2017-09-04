@@ -2,8 +2,8 @@
 
 /**
 * @Project NUKEVIET 4.x
-* @Author VINADES.,JSC (contact@vinades.vn)
-* @Copyright (C) 2016 VINADES.,JSC. All rights reserved
+* @Author VINADES.,JSC <contact@vinades.vn>
+* @Copyright (C) 2017 VINADES.,JSC. All rights reserved
 * @Language Français
 * @License CC BY-SA (http://creativecommons.org/licenses/by-sa/4.0/)
 * @Createdate Jun 21, 2010, 12:30:00 PM
@@ -21,6 +21,8 @@ $lang_translator['langtype'] = 'lang_module';
 
 $lang_module['notallowuserlogin'] = 'Désolé, cette fonction est désactivée  pour ce moment';
 $lang_module['register'] = 'Créer un compte';
+$lang_module['userlogout'] = 'Compte de membre sortie';
+$lang_module['userloginviaopt'] = 'Connectez-vous au port';
 $lang_module['login_title'] = 'Si vous avez un compte';
 $lang_module['lostpass_title'] = 'Si vous oubliez le mot de passe';
 $lang_module['memberlist'] = 'Liste des utilisateurs';
@@ -34,6 +36,7 @@ $lang_module['male'] = 'Homme';
 $lang_module['female'] = 'Femelle';
 $lang_module['na'] = 'Non déclaré';
 $lang_module['account'] = 'Identifiant';
+$lang_module['sig'] = 'Signature';
 $lang_module['email'] = 'E-mail';
 $lang_module['check'] = 'Vérifier';
 $lang_module['page'] = 'Page';
@@ -44,7 +47,7 @@ $lang_module['question'] = 'Question secrète';
 $lang_module['select_question'] = 'Sélectionnez une question';
 $lang_module['your_question'] = 'Ou poser une question';
 $lang_module['answer_question'] = 'Votre réponse';
-$lang_module['answer_your_question'] = 'Répondre';
+$lang_module['answer'] = 'Répondre';
 $lang_module['captcha'] = 'Code de sécurité';
 $lang_module['retype_captcha'] = 'Entrez le code de sécurité';
 $lang_module['usage_terms'] = 'Les termes et conditions générales de l\'inscription et l\'utilisation de notre site';
@@ -76,6 +79,7 @@ $lang_module['avatar_news_copy_error'] = 'Ne peux pas sauvegarder l\'image de pr
 $lang_module['birthday'] = 'Date de naissance';
 $lang_module['showmail'] = 'Afficher l’émail';
 $lang_module['login'] = 'Se connecter';
+$lang_module['login_with'] = 'Connectez-vous avec';
 $lang_module['login_submit'] = 'Soumettre';
 $lang_module['user_info'] = 'Infos de \'utilisateur';
 $lang_module['regdate'] = 'Date d\'inscription';
@@ -167,7 +171,7 @@ $lang_module['not_logged_in'] = 'Vous ne vous identifiez pas encore par OpenID';
 $lang_module['logged_in_failed'] = 'Désolé! Serveur de OpenID ne fournit pas les infos nécessaires pour vous identifier sur notre site';
 $lang_module['logged_no_email'] = 'Malheureusement, cette application ne propose pas de e-mail, s\'il vous plaît vérifier que vous avez déclaré à l\'application e-mail puis essayez à nouveau';
 $lang_module['openid_confirm_failed'] = 'Désolé, infos incorrectes.';
-$lang_module['openid_confirm_info'] = 'Votre OpenID n\'est pas enregistré sur ce site Web, mais email a été utilisé.<br /> Si le compte utilise cet email à vous, le certifiez en donnant le mot de passe.<br />Si  le mot de passe est assuré, à la fois suivante vous ne devez pas refaire ces actions';
+$lang_module['openid_confirm_info'] = 'Email %s de OpenID que vous venez de déclarer étaient attachés plus tôt pour le compte %s. Si ceci est votre compte, s\'il vous plaît confirmer en déclarant connexion mot de passe.';
 $lang_module['openid_active_info'] = 'Welcom %1$s,<br /><br />Your account at website %2$s wait to activate. To activate it, click link below:<br /><br />URL: <a href="%3$s">%3$s</a><br /><br />Information:<br /><br />Account:%4$s<br />Email: %5$s<br />Password: %6$s<br />OpenID: %7$s<br /><br />Activate link will be expired at %8$s<br /><br />This is automatic sent email from website %2$s. If you doesn\'t know about it\'s content, please delete it.<br /><br /><br /><br />Site admin';
 $lang_module['openid_register_info'] = 'Welcome %1$s,<br /><br />Your account at website %2$s activated. You can logging in by OpenID or your account. Your account information:<br /><br />URL: <a href="%3$s">%3$s</a><br /><br />Account: %4$s<br /><br /> Password: %5$s<br /><br />OpenID: %6$s<br /><br />This is an email automatic sent from website %2$s. If you doesn\'t know about it\'s content, please delete it. <br /><br />Site admin';
 $lang_module['openid_register'] = 'S\'inscrire avec OpenID';
@@ -286,7 +290,7 @@ $lang_module['group_manage'] = 'La direction du Groupe';
 $lang_module['in_group_ok'] = 'Configuration du groupe est réussi';
 $lang_module['lostpass_key'] = 'Code de certifier';
 $lang_module['group_join_queue'] = 'Demander à joindre le groupe';
-$lang_module['group_join_queue_message'] = 'Bonjour chef <strong>%1$s</strong>,<br  /><br  /><strong>%2$s</strong> a envoyé la demande à rejoindre le groupe <strong>%3$s</strong> parce que vous gérez. Vous devez approuver cette demande!<br  /><br  />S\'il vous plaît visitez <a href="%4$s" title="">ce lien</a> d\'approuver l\'adhésion.';
+$lang_module['group_join_queue_message'] = 'Bonjour chef <strong>%1$s</strong>,<br /><br /><strong>%2$s</strong> a envoyé la demande à rejoindre le groupe <strong>%3$s</strong> parce que vous gérez. Vous devez approuver cette demande!<br /><br />S\'il vous plaît visitez <a href="%4$s" title="">ce lien</a> d\'approuver l\'adhésion.';
 $lang_module['group_status'] = 'l\'état';
 $lang_module['group_status_0'] = 'Non rejoint';
 $lang_module['group_status_1'] = 'Relié';
@@ -334,7 +338,7 @@ $lang_module['active_users'] = 'Activation du compte';
 $lang_module['actived_users'] = 'Le compte a été activé avec succès!';
 $lang_module['not_active'] = 'Pour une raison ou une autre, mais le système ne peut pas activer votre compte. S\'il vous plaît consulter.';
 $lang_module['adduser_register'] = 'Votre compte a été créé';
-$lang_module['adduser_register_info'] = 'Bonjour %1$s,<br  /><br  />Votre compte Site de %2$s été activé. Voici vos informations de connexion: <br  /><br  />URL: <a href="%3$s">%3$s</a><br  />Nom %4$s<br  /><br  /> Ceci est un message automatique envoyé à votre boîte de réception e-mail à partir du site %2$s. Si vous ne comprenez pas quelque chose sur le contenu de cette lettre, il suffit de le supprimer. <br  /><br  />Site Administration';
+$lang_module['adduser_register_info'] = 'Bonjour %1$s,<br /><br />Votre compte Site de %2$s été activé. Voici vos informations de connexion: <br /><br />URL: <a href="%3$s">%3$s</a><br />Nom %4$s<br /><br /> Ceci est un message automatique envoyé à votre boîte de réception e-mail à partir du site %2$s. Si vous ne comprenez pas quelque chose sur le contenu de cette lettre, il suffit de le supprimer. <br /><br />Site Administration';
 $lang_module['noresult'] = 'Aucun résultat correspondant à votre demande';
 $lang_module['STT'] = 'Ordre';
 $lang_module['min_search'] = 'S\'il vous plaît entrer plus de %s caractères';
@@ -343,3 +347,12 @@ $lang_module['info_user'] = 'Pour vous inscrire à un compte, vous devez déclar
 $lang_module['note_remove_leader'] = 'Vous ne pouvez pas vous retirer du groupe!';
 $lang_module['not_del_user'] = 'Vous ne pouvez pas supprimer un membre, ce membre est dans un groupe différent. Vous ne pouvez supprimer des membres du groupe';
 $lang_module['UserNotInGroup'] = 'Les membres ne faisant pas partie de la direction du groupe';
+$lang_module['for_admin'] = 'For administrateur';
+$lang_module['2step_require_title'] = 'Nécessite l\'authentification en deux étapes permis';
+$lang_module['2step_require_content'] = 'Vous devez activer l\'authentification à deux facteurs peut se connecter. Le système passe automatiquement pour activer cette page momentanément';
+$lang_module['2step_require_directgo'] = 'Cliquez ici si pas système d\'auto-navigation';
+$lang_module['2step_error_opt_backup'] = 'S\'il vous plaît entrez le code de confirmation de l\'application Google Authenticator ou code redondant sauvé';
+$lang_module['2step_status'] = 'L\'authentification à deux étapes';
+$lang_module['2step_link'] = 'Réglage';
+$lang_module['old_min_user_error'] = 'Votre âge% s, l\'enregistrement des mineurs';
+$lang_module['lostpass_sendmail_error'] = 'Les systèmes actuels ne peuvent pas envoyer des courriels afin que vous ne pouvez pas récupérer un mot de passe temporaire, s\'il vous plaît contacter l\'administrateur du site d\'assistance. Nos sincères excuses pour la gêne occasionnée!';

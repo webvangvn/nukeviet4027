@@ -2,8 +2,8 @@
 
 /**
 * @Project NUKEVIET 4.x
-* @Author VINADES.,JSC (contact@vinades.vn)
-* @Copyright (C) 2016 VINADES.,JSC. All rights reserved
+* @Author VINADES.,JSC <contact@vinades.vn>
+* @Copyright (C) 2017 VINADES.,JSC. All rights reserved
 * @Language English
 * @License CC BY-SA (http://creativecommons.org/licenses/by-sa/4.0/)
 * @Createdate Mar 04, 2010, 08:22:00 AM
@@ -13,7 +13,7 @@ if (! defined('NV_ADMIN') or ! defined('NV_MAINFILE')) {
     die( 'Stop!!!' );
 }
 
-$lang_translator['author'] = 'VINADES.,JSC (contact@vinades.vn)';
+$lang_translator['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $lang_translator['createdate'] = '04/03/2010, 15:22';
 $lang_translator['copyright'] = '@Copyright (C) 2010 VINADES.,JSC. All rights reserved';
 $lang_translator['info'] = '';
@@ -48,9 +48,12 @@ $lang_module['type_file'] = 'All file';
 $lang_module['type_image'] = 'File Image';
 $lang_module['type_flash'] = 'Flash';
 $lang_module['rename'] = 'Rename';
-$lang_module['renamefolder'] = 'Rename';
-$lang_module['deletefolder'] = 'Delete';
-$lang_module['createfolder'] = 'Create';
+$lang_module['renamefolder'] = 'Rename Folder';
+$lang_module['deletefolder'] = 'Delete Folder';
+$lang_module['createfolder'] = 'Create Folder';
+$lang_module['recreatethumb'] = 'Recreate thumb images';
+$lang_module['recreatethumb_note'] = 'Note: This function will erase all the thumbs under the folder, both sub-folders and recreate the thumb image according to the new configuration. This process can take a long time, you can not close the browser';
+$lang_module['recreatethumb_result'] = 'Recreated thumb images for';
 $lang_module['rename_newname'] = 'New name:';
 $lang_module['rename_noname'] = 'You not enter a new file name';
 $lang_module['rename_error_folder'] = 'Error: System can not rename folder';
@@ -81,6 +84,10 @@ $lang_module['uploadError2'] = 'Error: URL not in accordance with standard';
 $lang_module['pubdate'] = 'Updated';
 $lang_module['newSize'] = 'Create a new image';
 $lang_module['prView'] = 'View';
+$lang_module['prViewExample'] = 'View Example';
+$lang_module['prViewExampleError'] = 'Please select the directory, a medias and input full size, thumb thumb thumb quality';
+$lang_module['prViewExampleError1'] = 'Example Error';
+$lang_module['prViewExampleError2'] = 'The system did not find any photos to give an example. You need to upload at least one image in the upload directory';
 $lang_module['errorMinX'] = 'Error: The width is less than the permitted level';
 $lang_module['errorMaxX'] = 'Error: The width is greater than the permitted level';
 $lang_module['errorMinY'] = 'Error: height less than the permitted level';
@@ -152,8 +159,11 @@ $lang_module['order1'] = 'Sort by date old';
 $lang_module['order2'] = 'Sort by file name';
 $lang_module['searchdir'] = 'Search in folder';
 $lang_module['searchkey'] = 'Search key';
+$lang_module['original_image'] = 'Original image';
+$lang_module['thumb_image'] = 'thumb mage';
 $lang_module['crop'] = 'Crop image';
 $lang_module['crop_error_small'] = 'This image size is too small, do not cut';
+$lang_module['crop_keep_original'] = 'Crop as a new image and keep original image';
 $lang_module['rotate'] = 'rotate image';
 $lang_module['waiting'] = 'Loading, please wait ...';
 $lang_module['file_no_exists'] = 'file no exists';
@@ -169,3 +179,4 @@ $lang_module['upload_auto_alt'] = 'Self-defined description of the image name';
 $lang_module['upload_alt_note'] = 'Please enter a description for the file first';
 $lang_module['upload_view_thumbnail'] = 'Switch to grid view';
 $lang_module['upload_view_detail'] = 'Switch to a list view';
+$lang_module['recreatethumb_result'] = 'Recreated thumb images for';

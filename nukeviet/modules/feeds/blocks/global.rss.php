@@ -2,9 +2,8 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
- * @Copyright (C) 2014 VINADES .
- * , JSC. All rights reserved
+ * @Author VINADES.,JSC <contact@vinades.vn>
+ * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate Jan 10, 2011 6:04:54 PM
  */
@@ -109,10 +108,9 @@ if (!nv_function_exists('nv_block_data_config_rss')) {
         global $global_config, $nv_Cache;
         $array_data = array();
         $cache_file = NV_LANG_DATA . '_' . md5($url) . '_' . NV_CACHE_PREFIX . '.cache';
-        if (($cache = $nv_Cache->getItem('rss', $cache_file)) != false) {
+        if (($cache = $nv_Cache->getItem('rss', $cache_file, 3600)) != false) {
             $array_data = unserialize($cache);
-        }
-        else {
+        } else {
             $getContent = new NukeViet\Client\UrlGetContents($global_config);
             $xml_source = $getContent->get($url);
             $allowed_html_tags = array_map('trim', explode(',', NV_ALLOWED_HTML_TAGS));

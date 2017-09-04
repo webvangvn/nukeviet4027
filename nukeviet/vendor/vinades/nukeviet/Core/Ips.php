@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 1-27-2010 5:25
@@ -47,12 +47,17 @@ class Ips
     private function nv_getenv($key)
     {
         if (isset($_SERVER[$key])) {
-            return $_SERVER[$key];
+            if (strpos($_SERVER[$key], ',')) {
+                $_arr = explode(',', $_SERVER[$key]);
+                return trim($_arr[0]);
+            } else {
+                return $_SERVER[$key];
+            }
         } elseif (isset($_ENV[$key])) {
             return $_ENV[$key];
         } elseif (@getenv($key)) {
             return @getenv($key);
-        } elseif (function_exists('apache_getenv') && apache_getenv($key, true)) {
+        } elseif (function_exists('apache_getenv') and apache_getenv($key, true)) {
             return apache_getenv($key, true);
         }
         return '';
@@ -183,7 +188,7 @@ class Ips
     public function nv_check_proxy()
     {
         $proxy = 'No';
-        if ($this->client_ip != 'none' || $this->forward_ip != 'none') {
+        if ($this->client_ip != 'none' or $this->forward_ip != 'none') {
             $proxy = 'Lite';
         }
         $host = @getHostByAddr($this->remote_ip);

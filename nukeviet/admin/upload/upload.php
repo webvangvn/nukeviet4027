@@ -2,33 +2,39 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 24/1/2011, 1:33
  */
 
-if (! defined('NV_IS_FILE_ADMIN')) {
+if (!defined('NV_IS_FILE_ADMIN')) {
     die('Stop!!!');
 }
 
 $path = nv_check_path_upload($nv_Request->get_string('path', 'post,get', NV_UPLOADS_DIR));
 $check_allow_upload_dir = nv_check_allow_upload_dir($path);
+$newfilename = change_alias($nv_Request->get_title('newfilename', 'post', ''));
+$responseType = $nv_Request->get_title('responseType', 'get', '');
 
 $error = '';
-if (! isset($check_allow_upload_dir['upload_file'])) {
+if (!isset($check_allow_upload_dir['upload_file'])) {
     $error = $lang_module['notlevel'];
-} elseif (! isset($_FILES, $_FILES['upload'], $_FILES['upload']['tmp_name']) and ! $nv_Request->isset_request('fileurl', 'post')) {
+} elseif (!isset($_FILES, $_FILES['upload'], $_FILES['upload']['tmp_name']) and !$nv_Request->isset_request('fileurl', 'post')) {
     $error = $lang_module['uploadError1'];
-} elseif (! isset($_FILES) and ! nv_is_url($nv_Request->get_string('fileurl', 'post,get'))) {
+} elseif (!isset($_FILES) and !nv_is_url($nv_Request->get_string('fileurl', 'post,get'))) {
     $error = $lang_module['uploadError2'];
 } else {
     $type = $nv_Request->get_string('type', 'post,get');
 
     if ($type == 'image' and in_array('images', $admin_info['allow_files_type'])) {
-        $allow_files_type = array( 'images' );
+        $allow_files_type = array(
+            'images'
+        );
     } elseif ($type == 'flash' and in_array('flash', $admin_info['allow_files_type'])) {
-        $allow_files_type = array( 'flash' );
+        $allow_files_type = array(
+            'flash'
+        );
     } elseif (empty($type)) {
         $allow_files_type = $admin_info['allow_files_type'];
     } else {
@@ -36,6 +42,7 @@ if (! isset($check_allow_upload_dir['upload_file'])) {
     }
 
     $upload = new NukeViet\Files\Upload($allow_files_type, $global_config['forbid_extensions'], $global_config['forbid_mimes'], NV_UPLOAD_MAX_FILESIZE, NV_MAX_WIDTH, NV_MAX_HEIGHT);
+    $upload->setLanguage($lang_global);
 
     if (isset($_FILES['upload']['tmp_name']) and is_uploaded_file($_FILES['upload']['tmp_name'])) {
         $upload_info = $upload->save_file($_FILES['upload'], NV_ROOTDIR . '/' . $path, false, $global_config['nv_auto_resize']);
@@ -44,7 +51,7 @@ if (! isset($check_allow_upload_dir['upload_file'])) {
         $upload_info = $upload->save_urlfile($urlfile, NV_ROOTDIR . '/' . $path, false, $global_config['nv_auto_resize']);
     }
 
-    if (! empty($upload_info['error'])) {
+    if (!empty($upload_info['error'])) {
         $error = $upload_info['error'];
     } elseif (preg_match('#image\/[x\-]*([a-z]+)#', $upload_info['mime'])) {
         if (isset($array_thumb_config[$path])) {
@@ -91,7 +98,7 @@ if (! isset($check_allow_upload_dir['upload_file'])) {
                 $arr_dir = explode('/', $dir);
 
                 if ($global_config['autologomod'] == 'all' or ($arr_dir[0] == NV_UPLOADS_DIR and isset($arr_dir[1]) and in_array($arr_dir[1], $autologomod))) {
-                    if (! empty($global_config['upload_logo']) and file_exists(NV_ROOTDIR . '/' . $global_config['upload_logo'])) {
+                    if (!empty($global_config['upload_logo']) and file_exists(NV_ROOTDIR . '/' . $global_config['upload_logo'])) {
                         $logo_size = getimagesize(NV_ROOTDIR . '/' . $global_config['upload_logo']);
                         $file_size = $upload_info['img_info'];
 
@@ -137,6 +144,20 @@ if (! isset($check_allow_upload_dir['upload_file'])) {
                         $createImage->save(NV_ROOTDIR . '/' . $path, $upload_info['basename'], $thumb_config['thumb_quality']);
                     }
                 }
+                //remame with option new filename
+                if (!empty($newfilename)) {
+                    $i = 1;
+                    $newfilename = $newfilename . '.' . $upload_info['ext'];
+                    $newname2 = $newfilename;
+                    while (file_exists(NV_ROOTDIR . '/' . $path . '/' . $newname2)) {
+                        $newname2 = preg_replace('/(.*)(\.[a-zA-Z0-9]+)$/', '\1_' . $i . '\2', $newfilename);
+                        ++$i;
+                    }
+                    $newfilename = $newname2;
+                    if (@rename(NV_ROOTDIR . '/' . $path . '/' . $upload_info['basename'], NV_ROOTDIR . '/' . $path . '/' . $newfilename)) {
+                        $upload_info['basename'] = $newfilename;
+                    }
+                }
             }
         }
     }
@@ -145,7 +166,7 @@ if (! isset($check_allow_upload_dir['upload_file'])) {
 $editor = $nv_Request->get_title('editor', 'post,get', '');
 $CKEditorFuncNum = $nv_Request->get_int('CKEditorFuncNum', 'post,get', 0);
 
-if (! preg_match("/^([a-zA-Z0-9\-\_]+)$/", $editor)) {
+if (!preg_match("/^([a-zA-Z0-9\-\_]+)$/", $editor)) {
     $editor = '';
 }
 
@@ -163,8 +184,8 @@ if (empty($error)) {
         }
 
         $sth = $db->prepare("INSERT INTO " . NV_UPLOAD_GLOBALTABLE . "_file
-		(name, ext, type, filesize, src, srcwidth, srcheight, sizes, userid, mtime, did, title, alt) VALUES
-		('" . $info['name'] . "', '" . $info['ext'] . "', '" . $info['type'] . "', " . $info['filesize'] . ", '" . $info['src'] . "', " . $info['srcwidth'] . ", " . $info['srcheight'] . ", '" . $info['size'] . "', " . $info['userid'] . ", " . $info['mtime'] . ", " . $did . ", '" . $upload_info['basename'] . "', :newalt)");
+    		(name, ext, type, filesize, src, srcwidth, srcheight, sizes, userid, mtime, did, title, alt) VALUES
+    		('" . $info['name'] . "', '" . $info['ext'] . "', '" . $info['type'] . "', " . $info['filesize'] . ", '" . $info['src'] . "', " . $info['srcwidth'] . ", " . $info['srcheight'] . ", '" . $info['size'] . "', " . $info['userid'] . ", " . $info['mtime'] . ", " . $did . ", '" . $upload_info['basename'] . "', :newalt)");
 
         $sth->bindParam(':newalt', $newalt, PDO::PARAM_STR);
         $sth->execute();
@@ -173,16 +194,32 @@ if (empty($error)) {
     nv_insert_logs(NV_LANG_DATA, $module_name, $lang_module['upload_file'], $path . '/' . $upload_info['basename'], $admin_info['userid']);
 
     if ($editor == 'ckeditor') {
-        echo "<script type=\"text/javascript\">window.parent.CKEDITOR.tools.callFunction(" . $CKEditorFuncNum . ", '" . NV_BASE_SITEURL . $path . "/" . $upload_info['basename'] . "', '');</script>";
+        if ($responseType == 'json') {
+            $array_data = array();
+            $array_data['uploaded'] = 1;
+            $array_data['fileName'] = $upload_info['basename'];
+            $array_data['url'] = NV_BASE_SITEURL . $path . '/' . $upload_info['basename'];
+
+            nv_jsonOutput($array_data);
+        } else {
+            echo "<script type=\"text/javascript\">window.parent.CKEDITOR.tools.callFunction(" . $CKEditorFuncNum . ", '" . NV_BASE_SITEURL . $path . "/" . $upload_info['basename'] . "', '');</script>";
+        }
     } else {
         echo $upload_info['basename'];
     }
 } else {
-    if ($editor == 'ckeditor') {
+    if ($responseType == 'json') {
+        $array_data = array();
+        $array_data['uploaded'] = 0;
+        $array_data['error'] = array(
+            'message' => $error
+        );
+
+        nv_jsonOutput($array_data);
+    } elseif ($editor == 'ckeditor') {
         echo "<script type=\"text/javascript\">window.parent.CKEDITOR.tools.callFunction(" . $CKEditorFuncNum . ", '', '" . $error . "');</script>";
     } else {
         echo 'ERROR_' . $error;
     }
 }
-
 exit();

@@ -2,18 +2,18 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @Language Tiếng Việt
  * @License CC BY-SA (http://creativecommons.org/licenses/by-sa/4.0/)
  * @Createdate Mar 04, 2010, 03:22:00 PM
  */
 
-if (! defined('NV_MAINFILE')) {
+if (!defined('NV_MAINFILE')) {
     die('Stop!!!');
 }
 
-$lang_translator['author'] = 'VINADES.,JSC (contact@vinades.vn)';
+$lang_translator['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $lang_translator['createdate'] = '04/03/2010, 15:22';
 $lang_translator['copyright'] = '@Copyright (C) 2012 VINADES.,JSC. All rights reserved';
 $lang_translator['info'] = '';
@@ -21,6 +21,8 @@ $lang_translator['langtype'] = 'lang_module';
 
 $lang_module['notallowuserlogin'] = 'Xin lỗi, hiện tại chức năng đăng nhập thành viên đang dừng hoạt động';
 $lang_module['register'] = 'Đăng ký thành viên';
+$lang_module['userlogout'] = 'Thoát khỏi tài khoản thành viên';
+$lang_module['userloginviaopt'] = 'Đăng nhập bằng cổng';
 $lang_module['login_title'] = 'Nếu bạn đã có tài khoản';
 $lang_module['lostpass_title'] = 'Nếu bạn quên Mật khẩu đăng nhập';
 $lang_module['memberlist'] = 'Danh sách thành viên';
@@ -34,6 +36,7 @@ $lang_module['male'] = 'Nam';
 $lang_module['female'] = 'Nữ';
 $lang_module['na'] = 'N/A';
 $lang_module['account'] = 'Tên đăng nhập';
+$lang_module['sig'] = 'Chữ ký';
 $lang_module['email'] = 'Email';
 $lang_module['check'] = 'Kiểm tra';
 $lang_module['page'] = 'Trang %d';
@@ -44,7 +47,7 @@ $lang_module['question'] = 'Câu hỏi bảo mật';
 $lang_module['select_question'] = 'Hãy lựa chọn câu hỏi';
 $lang_module['your_question'] = 'Hoặc tự điền câu hỏi bảo mật riêng';
 $lang_module['answer_question'] = 'Câu trả lời của bạn';
-$lang_module['answer_your_question'] = 'Trả lời câu hỏi';
+$lang_module['answer'] = 'Trả lời câu hỏi';
 $lang_module['captcha'] = 'Mã bảo mật';
 $lang_module['retype_captcha'] = 'Nhập vào mã xác nhận';
 $lang_module['usage_terms'] = 'Quy định đăng ký thành viên';
@@ -76,6 +79,7 @@ $lang_module['avatar_news_copy_error'] = 'Không thể lưu hình đại diện'
 $lang_module['birthday'] = 'Ngày tháng năm sinh';
 $lang_module['showmail'] = 'Hiển thị email';
 $lang_module['login'] = 'Thành viên đăng nhập';
+$lang_module['login_with'] = 'Đăng nhập với';
 $lang_module['login_submit'] = 'Đăng nhập';
 $lang_module['user_info'] = 'Thông tin thành viên';
 $lang_module['regdate'] = 'Ngày tham gia';
@@ -132,9 +136,10 @@ $lang_module['pass_new_re'] = 'Nhập lại mật khẩu mới';
 $lang_module['change_pass_ok'] = 'Thay đổi mật khẩu thành công';
 $lang_module['lostpass_email_subject'] = 'Hướng dẫn khôi phục mật khẩu';
 $lang_module['lostpass_email_content'] = 'Xin chào %1$s,<br /><br />Bạn vừa gửi đề nghị thay đổi mật khẩu đăng nhập tài khoản cá nhân tại website %2$s. Để thay đổi mật khẩu, bạn cần nhập mã xác minh dưới đây vào ô tương ứng tại khu vực thay đổi mật khẩu.<br /><br />Mã xác minh: <strong>%3$s</strong></a><br /><br />Mã này chỉ được sử dụng một lần và trước thời hạn: %4$s.<br /><br />Đây là thư tự động được gửi đến hòm thư điện tử của bạn từ website %2$s. Nếu bạn không hiểu gì về nội dung bức thư này, đơn giản hãy xóa nó đi.<br /><br />Quản trị site';
-$lang_module['lostpass_content_mess'] = 'Thư thông báo mã xác minh đã được gửi tới email của bạn. Hãy chép mã đó vào ô này.';
+$lang_module['lostpass_content_mess'] = 'Thư thông báo mã xác minh đã được gửi tới email %1$s của bạn. Hãy chép mã đó vào ô này.';
 $lang_module['lostpass_active_error'] = 'Mã xác minh không khớp!';
 $lang_module['lostpass_newpass_mess'] = 'Hãy khai báo mật khẩu mới vào ô này.';
+$lang_module['lostpass_sendmail_error'] = 'Hiện tại hệ thống không thể gửi email được do đó bạn tạm thời không thể lấy lại mật khẩu, vui lòng liên hệ với quản trị site để được hỗ trợ. Thành thật xin lỗi về sự bất tiện này!';
 $lang_module['logout_title'] = 'Thoát';
 $lang_module['edit_info_title'] = 'Sửa';
 $lang_module['img_size_title'] = 'Hình đại diện';
@@ -167,7 +172,7 @@ $lang_module['not_logged_in'] = 'Bạn Chưa đăng nhập bằng OpenID';
 $lang_module['logged_in_failed'] = 'Rất tiếc là OpenID-Server này không cung cấp đủ các thông tin cần thiết để có thể đăng nhập vào website của chúng tôi';
 $lang_module['logged_no_email'] = 'Rất tiếc là Ứng dụng này không cung cấp email, Vui lòng kiểm tra lại xem bạn đã khai báo email cho ứng dụng sau đó thử lại';
 $lang_module['openid_confirm_failed'] = 'Rất tiếc là bạn đã khai báo sai';
-$lang_module['openid_confirm_info'] = 'Email của OpenID mà bạn vừa khai báo đã được gắn trước đó vào một tài khoản. Nếu tài khoản này là của bạn, hãy xác nhận bằng cách khai báo mật khẩu đăng nhập.';
+$lang_module['openid_confirm_info'] = 'Email %s của OpenID mà bạn vừa khai báo đã được gắn trước đó vào tài khoản %s. Nếu tài khoản này là của bạn, hãy xác nhận bằng cách khai báo mật khẩu đăng nhập.';
 $lang_module['openid_active_info'] = 'Xin chào %1$s,<br /><br />Tài khoản của bạn tại website %2$s đang chờ kích hoạt. Để kích hoạt, bạn hãy click vào link dưới đây:<br /><br />URL: <a href="%3$s">%3$s</a><br /><br />Các thông tin cần thiết:<br /><br />Tài khoản: %4$s<br />Email: %5$s<br />OpenID: %7$s<br /><br />Việc kích hoạt tài khoản chỉ có hiệu lực đến %8$s<br /><br />Đây là thư tự động được gửi đến hòm thư điện tử của bạn từ website %2$s. Nếu bạn không hiểu gì về nội dung bức thư này, đơn giản hãy xóa nó đi.<br /><br /><br /><br />Quản trị site';
 $lang_module['openid_register_info'] = 'Xin chào %1$s,<br /><br />Tài khoản của bạn tại website %2$s đã được kích hoạt. Bạn có thể đăng nhập bằng OpenID hoặc bằng tài khoản nếu trong quá trình đăng ký bạn đã khai báo mật khẩu. Dưới đây là thông tin tài khoản:<br /><br />URL: <a href="%3$s">%3$s</a><br /><br />Tên tài khoản: %4$s<br /><br /><br />OpenID: %5$s<br /><br />Đây là thư tự động được gửi đến hòm thư điện tử của bạn từ website %2$s. Nếu bạn không hiểu gì về nội dung bức thư này, đơn giản hãy xóa nó đi.<br /><br />Quản trị site';
 $lang_module['openid_register'] = 'Đăng ký thông qua OpenID';
@@ -227,6 +232,7 @@ $lang_module['field_min_max_error'] = '%1$s cần nhập từ %2$s đến %3$s k
 $lang_module['field_match_type_required'] = '%s bắt buộc nhập';
 $lang_module['errorMessage'] = 'Thông báo từ hệ thống';
 $lang_module['login_info'] = 'Hãy đăng nhập thành viên để trải nghiệm đầy đủ các tiện ích trên site';
+$lang_module['old_min_user_error'] = 'Tuổi của bạn dưới %s nên chưa đủ tuổi đăng ký';
 
 $lang_module['edit_basic'] = 'Cơ bản';
 $lang_module['edit_others'] = 'Khác';
@@ -342,10 +348,17 @@ $lang_module['not_active'] = 'Vì một lý do nào đó mà hệ thốn
 $lang_module['adduser_register'] = 'Tài khoản của bạn đã được tạo';
 $lang_module['adduser_register_info'] = 'Xin chào %1$s,<br /><br />Tài khoản của bạn tại website %2$s đã được kích hoạt. Dưới đây là thông tin đăng nhập:<br /><br />URL: <a href="%3$s">%3$s</a><br />Tên tài khoản: %4$s<br /><br />Đây là thư tự động được gửi đến hòm thư điện tử của bạn từ website %2$s. Nếu bạn không hiểu gì về nội dung bức thư này, đơn giản hãy xóa nó đi.<br /><br />Quản trị site';
 $lang_module['noresult'] = 'Không có kết quả nào phù hợp với yêu cầu của bạn';
-$lang_module['STT']='STT';
-$lang_module['min_search']='Vui lòng nhập nhiều hơn %s ký tự';
-$lang_module['no_premission_pass']='Bạn không có quyền đổi mật khẩu thành viên!';
+$lang_module['STT'] = 'STT';
+$lang_module['min_search'] = 'Vui lòng nhập nhiều hơn %s ký tự';
+$lang_module['no_premission_pass'] = 'Bạn không có quyền đổi mật khẩu thành viên!';
 $lang_module['info_user'] = 'Để đăng ký tài khoản, bạn cần khai báo tất cả các ô trống dưới đây';
 $lang_module['note_remove_leader'] = 'Bạn không thể loại bỏ chính mình ra khỏi nhóm!';
 $lang_module['not_del_user'] = 'Bạn không thể xóa thành viên, thành viên này đang ở một nhóm khác. Bạn chỉ có thể loại bỏ thành viên ra khỏi nhóm';
 $lang_module['UserNotInGroup'] = 'Thành viên không thuộc nhóm quản lí';
+$lang_module['for_admin'] = 'Dành cho quản trị';
+$lang_module['2step_require_title'] = 'Yêu cầu kích hoạt chức năng xác thực hai bước';
+$lang_module['2step_require_content'] = 'Hệ thống bắt buộc bạn phải kích hoạt chức năng xác thực hai bước mới có thể đăng nhập được. Hệ thống sẽ tự chuyển đến trang kích hoạt chức năng này trong giây lát';
+$lang_module['2step_require_directgo'] = 'Nhấp vào đây nếu hệ thống không tự chuyển';
+$lang_module['2step_error_opt_backup'] = 'Vui lòng nhập mã xác nhận từ ứng dụng Google Authenticator hoặc Mã dự phòng đã lưu';
+$lang_module['2step_status'] = 'Xác thực hai bước';
+$lang_module['2step_link'] = 'Thiết lập';

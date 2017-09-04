@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 1-27-2010 5:25
@@ -46,44 +46,6 @@ function nv_admin_checkip()
 }
 
 /**
- * nv_set_authorization()
- *
- * @return
- */
-function nv_set_authorization()
-{
-    $auth_user = $auth_pw = '';
-    if (nv_getenv('PHP_AUTH_USER')) {
-        $auth_user = nv_getenv('PHP_AUTH_USER');
-    } elseif (nv_getenv('REMOTE_USER')) {
-        $auth_user = nv_getenv('REMOTE_USER');
-    } elseif (nv_getenv('AUTH_USER')) {
-        $auth_user = nv_getenv('AUTH_USER');
-    } elseif (nv_getenv('HTTP_AUTHORIZATION')) {
-        $auth_user = nv_getenv('HTTP_AUTHORIZATION');
-    } elseif (nv_getenv('Authorization')) {
-        $auth_user = nv_getenv('Authorization');
-    }
-
-    if (nv_getenv('PHP_AUTH_PW')) {
-        $auth_pw = nv_getenv('PHP_AUTH_PW');
-    } elseif (nv_getenv('REMOTE_PASSWORD')) {
-        $auth_pw = nv_getenv('REMOTE_PASSWORD');
-    } elseif (nv_getenv('AUTH_PASSWORD')) {
-        $auth_pw = nv_getenv('AUTH_PASSWORD');
-    }
-
-    if (strcmp(substr($auth_user, 0, 6), 'Basic ') == 0) {
-        $usr_pass = base64_decode(substr($auth_user, 6));
-        if (! empty($usr_pass) && strpos($usr_pass, ':') !== false) {
-            list($auth_user, $auth_pw) = explode(':', $usr_pass);
-        }
-        unset($usr_pass);
-    }
-    return array( 'auth_user' => $auth_user, 'auth_pw' => $auth_pw );
-}
-
-/**
  * nv_admin_checkfirewall()
  *
  * @return
@@ -103,7 +65,7 @@ function nv_admin_checkfirewall()
 
             $auth = nv_set_authorization();
 
-            if (empty($auth['auth_user']) || empty($auth['auth_pw'])) {
+            if (empty($auth['auth_user']) or empty($auth['auth_pw'])) {
                 return false;
             }
 
@@ -130,7 +92,7 @@ function nv_admin_checkfirewall()
  */
 function nv_admin_checkdata($adm_session_value)
 {
-    global $db, $global_config, $db_config;
+    global $db, $global_config;
 
     $array_admin = unserialize($adm_session_value);
 
@@ -138,18 +100,18 @@ function nv_admin_checkdata($adm_session_value)
         return array();
     }
 
-    $query = 'SELECT a.admin_id AS admin_id, a.lev AS lev, a.position AS position, a.check_num AS check_num, a.last_agent AS current_agent,
-		a.last_ip AS current_ip, a.last_login AS current_login, a.files_level AS files_level, a.editor AS editor, b.userid AS userid, b.group_id AS group_id,
-		b.username AS username, b.email AS email, b.first_name AS first_name, b.last_name AS last_name, b.view_mail AS view_mail, b.regdate AS regdate,
-		b.sig AS sig, b.gender AS gender, b.photo AS photo, b.birthday AS birthday, b.in_groups AS in_groups, b.last_openid AS last_openid,
-		b.password AS password, b.question AS question, b.answer AS answer, b.safemode AS safemode 
+    $sql = 'SELECT a.admin_id admin_id, a.lev lev, a.position position, a.check_num check_num, a.last_agent current_agent,
+		a.last_ip current_ip, a.last_login current_login, a.files_level files_level, a.editor editor, b.userid userid, b.group_id group_id,
+		b.username username, b.email email, b.first_name first_name, b.last_name last_name, b.view_mail view_mail, b.regdate regdate,
+		b.sig sig, b.gender gender, b.photo photo, b.birthday birthday, b.in_groups in_groups, b.active2step active2step, b.last_openid last_openid,
+		b.password password, b.question question, b.answer answer, b.safemode safemode
 		FROM ' . NV_AUTHORS_GLOBALTABLE . ' a, ' . NV_USERS_GLOBALTABLE . ' b
 		WHERE a.admin_id = ' . $array_admin['admin_id'] . '
 		AND a.lev!=0
 		AND a.is_suspend=0
 		AND b.userid=a.admin_id
 		AND b.active=1';
-    $admin_info = $db->query($query)->fetch();
+    $admin_info = $db->query($sql)->fetch();
     if (empty($admin_info)) {
         return array();
     }
@@ -191,8 +153,19 @@ function nv_admin_checkdata($adm_session_value)
     if (empty($admin_info['first_name'])) {
         $admin_info['first_name'] = $admin_info['username'];
     }
-    $admin_info['in_groups'] = nv_user_groups($admin_info['in_groups']);
+    
+    // Thêm tự động nhóm của hệ thống
+    $manual_groups = array(3);
+    if ($admin_info['level'] == 1 or $admin_info['level'] == 2) {
+        $manual_groups[] = 2;
+    }
+    if ($admin_info['level'] == 1 and $global_config['idsite'] == 0) {
+        $manual_groups[] = 1;
+    }
 
+    $check_in_groups = nv_user_groups($admin_info['in_groups'], true, $manual_groups);
+    $admin_info['in_groups'] = $check_in_groups[0];
+    $admin_info['2step_require'] = $check_in_groups[1];
     $admin_info['current_openid'] = '';
     $admin_info['st_login'] = ! empty($admin_info['password']) ? true : false;
     $admin_info['valid_question'] = (! empty($admin_info['question']) and ! empty($admin_info['answer'])) ? true : false;

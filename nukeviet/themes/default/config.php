@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate Thu, 17 Apr 2014 04:03:46 GMT
@@ -178,7 +178,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     $property['family'] = $nv_Request->get_title('gfont_family', 'post', '');
     $property['styles'] = $nv_Request->get_title('gfont_styles', 'post', '');
     $property['subset'] = $nv_Request->get_title('gfont_subset', 'post', '');
-    empty($property['family']) && ($property['styles'] = $property['subset'] = "");
+    empty($property['family']) and ($property['styles'] = $property['subset'] = "");
     $config_theme['gfont'] = array_filter($property);
 
     // General css
@@ -188,7 +188,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     }
 
     $config_value = array_filter($config_theme);
-    !empty($css) && $config_value['css_content'] = $css;
+    !empty($css) and $config_value['css_content'] = $css;
     $config_value = serialize($config_value);
 
     if (isset($module_config['themes'][$selectthemes])) {
@@ -216,8 +216,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
         nv_deletefile(NV_ROOTDIR . "/" . NV_ASSETS_DIR . "/css/" . $selectthemes . "." . NV_LANG_DATA . "." . $global_config['idsite'] . ".css");
     }
 
-    Header('Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&selectthemes=' . $selectthemes . '&rand=' . nv_genpass());
-    die();
+    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&selectthemes=' . $selectthemes . '&rand=' . nv_genpass());
 } else {
     $default_config_theme = "";
     require NV_ROOTDIR . '/themes/' . $selectthemes . '/config_default.php';
@@ -229,7 +228,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     }
 }
 
-$xtpl = new XTemplate('config.tpl', NV_ROOTDIR . '/themes/' . $selectthemes . '/system/');
+$xtpl = new XTemplate('config.tpl', NV_ROOTDIR . '/themes/' . $selectthemes . '/system');
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('NV_LANG_VARIABLE', NV_LANG_VARIABLE);
 $xtpl->assign('NV_LANG_DATA', NV_LANG_DATA);
@@ -260,7 +259,7 @@ if (isset($module_config['themes'][$selectthemes])) {
         $xtpl->assign('BLOCK_BORDER_STYLE', array(
             'key' => $key,
             'value' => $value,
-            'selected' => (isset($config_theme['block']['border_style']) && $config_theme['block']['border_style'] == $key) ? ' selected="selected"' : '' ));
+            'selected' => (isset($config_theme['block']['border_style']) and $config_theme['block']['border_style'] == $key) ? ' selected="selected"' : '' ));
         $xtpl->parse('main.block_border_style');
     }
 

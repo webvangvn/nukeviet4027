@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES ., JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate Jan 17, 2011 11:34:27 AM
@@ -89,7 +89,7 @@ if (! nv_function_exists('nv_company_info')) {
 				  </div>';
         $html .= '</div>';
         $html .= '</div>';
-        $html .= '<div class="row">';
+        $html .= '<div class="row m-bottom">';
         $html .= '<div class="col-xs-12">';
         $html .= '<div class="input-group">
 				  	<span class="input-group-addon">Z</span>
@@ -174,6 +174,8 @@ if (! nv_function_exists('nv_company_info')) {
             $block_theme = 'default';
         }
 
+        $block_config['company_mapapikey'] = $global_config['googleMapsAPI'];
+        
         $xtpl = new XTemplate('global.company_info.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/blocks');
         $xtpl->assign('LANG', $lang_global);
         $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
@@ -256,7 +258,7 @@ if (! nv_function_exists('nv_company_info')) {
         if (! empty($block_config['company_website'])) {
             $webs = array_map('trim', explode(',', $block_config['company_website']));
             foreach ($webs as $k => $web) {
-                if (! preg_match("/^http\:\/\//", $web)) {
+                if (! preg_match("/^https?\:\/\//", $web)) {
                     $web = 'http://' . $web;
                 }
                 $xtpl->assign('WEBSITE', $web);

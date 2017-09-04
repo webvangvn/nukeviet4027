@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate Mon, 27 Jan 2014 00:08:04 GMT
@@ -22,7 +22,6 @@ if (! empty($module) and isset($module_config[$module]['activecomm'])) {
     $checkss = $nv_Request->get_title('checkss', 'post,get');
     $page = $nv_Request->get_int('page', 'get', 1);
     $status_comment = $nv_Request->get_title('status_comment', 'post,get', '');
-    define('NV_PER_PAGE_COMMENT', $nv_Request->get_int('perpage', 'get', 5));//per_page_comment
     require_once NV_ROOTDIR . '/modules/comment/comment.php';
     $content_comment = nv_comment_module($module, $checkss, $area, $id, $allowed_comm, $page, $status_comment);
     include NV_ROOTDIR . '/includes/header.php';
@@ -30,5 +29,4 @@ if (! empty($module) and isset($module_config[$module]['activecomm'])) {
     include NV_ROOTDIR . '/includes/footer.php';
 }
 
-Header('Location: ' . nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA, true));
-die();
+nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA);
